@@ -129,11 +129,34 @@ function prices(){
     require 'Views/Partials/head.php';
     require 'Repositories/DrinkRepository.php';
     require 'Models/Drink.php';
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
 
     $drinkRepository = new DrinkRepository();
     $drinks          = $drinkRepository->findAll();
 
+    $configRepository = new ConfigRepository();
+    $ticketPrice = $configRepository->findConfigById('ticketPrice');
+
     require 'Views/prices.php';
+}
+
+dispatch_post('ticket/price/set', 'setTicketPrice');
+function setTicketPrice(){
+    checkIfConnected();
+
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    $configRepository = new ConfigRepository();
+
+    if(empty($_POST['price'])){
+        $_POST['price'] = 0;
+    }
+
+    $configRepository->setTextValueById('ticketPrice', $_POST['price']);
+
+    header('location: ?/prices');
 }
 
 dispatch_post('/drink/add', 'addDrink');
@@ -233,6 +256,11 @@ function sales(){
     require 'Views/Partials/head.php';
     require 'Repositories/DrinkRepository.php';
     require 'Models/Drink.php';
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    $configRepository = new ConfigRepository();
+    $ticketPrice = floatval($configRepository->findConfigById('ticketPrice')->getTextValue());
 
     $drinkRepository = new DrinkRepository();
     $drinks = $drinkRepository->findAllAvailable();

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Bourse à la bière</title>
+    <title>Soirées AEE</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="Assets/css/bootstrap.min.css" rel="stylesheet">

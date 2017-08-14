@@ -91,14 +91,14 @@
                                                     <tr>
                                                         <td><?php echo $drink->getName(); ?></td>
                                                         <td><?php echo $drink->getSalesCount(); ?></td>
-                                                        <td><?php echo $drink->getEstimatedRevenue(); echo ' ('.$drink->getEstimatedRevenue()*0.2;?> €)</td>
+                                                        <td><?php echo $drink->getEstimatedRevenue(); echo ' ('.$drink->getEstimatedRevenue()*$ticketPrice;?> €)</td>
                                                     </tr>
                                                     <?php } ?>
 
                                                     <tr>
                                                         <th>Total</th>
                                                         <th><?php echo $totalSalesCount ?></th>
-                                                        <th><?php echo $totalEstimatedRevenue; echo ' ('.$totalEstimatedRevenue*0.2;?> €)</th>
+                                                        <th><?php echo $totalEstimatedRevenue; echo ' ('.$totalEstimatedRevenue*$ticketPrice;?> €)</th>
                                                     </tr>
 
                                                 </tbody>
