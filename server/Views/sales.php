@@ -20,19 +20,7 @@
                 </li>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="?/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="?/prices"><i class="fa fa-fw fa-line-chart"></i> Gestion des prix</a>
-                    </li>
-                    <li class="active">
-                        <a href="?/sales"><i class="fa fa-fw fa-glass"></i> Gestion des ventes</a>
-                    </li>
-                </ul>
-            </div>
+            <?php require 'Views/Partials/menu.php';?>
             <!-- /.navbar-collapse -->
         </nav>
 

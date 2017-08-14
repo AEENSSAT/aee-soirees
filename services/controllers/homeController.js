@@ -6,6 +6,8 @@ app.controller('homeController', function($scope, $interval,$http) {
 
     $scope.drinksData = {};
 
+    $scope.displayConfig = {};
+
     $scope.pricesAlert = {"priceUpAlert":1, "priceDownAlert" : 0};
 
     //@todo : remplir les données au demarrage avec les données du serveur
@@ -45,7 +47,7 @@ app.controller('homeController', function($scope, $interval,$http) {
     $scope.sendDrinksDataRequest = function(){
         $http({
             method: 'GET',
-            url: '/server/?/api/getDrinkData/'
+            url: 'server/?/api/getDrinkData/'
         }).then(function successCallback(response) {
             $scope.series = [];
             for(var drink in response.data){
@@ -77,7 +79,7 @@ app.controller('homeController', function($scope, $interval,$http) {
     $scope.sendDrinksLiveDataRequest = function(){
         $http({
             method: 'GET',
-            url: '/server/?/api/getDrinkData/'
+            url: 'server/?/api/getDrinkData/'
         }).then(function successCallback(response) {
             $scope.updateDrinksData(response.data);
         }, function errorCallback(response) {
@@ -88,9 +90,21 @@ app.controller('homeController', function($scope, $interval,$http) {
     $scope.sendAlertRequest = function(){
         $http({
             method: 'GET',
-            url: '/server/?/api/getAlertsData/'
+            url: 'server/?/api/getAlertsData/'
         }).then(function successCallback(response) {
             $scope.pricesAlerts = response.data;
+        }, function errorCallback(response) {
+            console.error(response);
+        });
+    }
+
+    $scope.sendDisplayConfigRequest = function(){
+        $http({
+            method: 'GET',
+            url: 'server/?/api/getDisplayConfig'
+        }).then(function successCallback(response) {
+            $scope.displayConfig = response.data;
+            console.debug($scope.displayConfig);
         }, function errorCallback(response) {
             console.error(response);
         });
@@ -111,15 +125,17 @@ app.controller('homeController', function($scope, $interval,$http) {
         $scope.sendAlertRequest();
     }, 1000);
 
+    $scope.sendDisplayConfigRequest();
+    $interval(function () {
+        $scope.sendDisplayConfigRequest();
+    }, 60000);
+
     $scope.updateDrinksData = function(drinks){
 
         $scope.drinksData = [];
 
         for(var drink in drinks){
             if(drinks[drink].isEnable == 1){
-                console.log('----');
-                console.log('current' + drinks[drink].currentPrice);
-                console.log('previous' + drinks[drink].previousPrice);
                 if(parseInt(drinks[drink].currentPrice) > parseInt(drinks[drink].previousPrice)){
                     drinks[drink].increase = true;
                 }else{

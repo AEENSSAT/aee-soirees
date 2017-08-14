@@ -259,6 +259,51 @@ function addSale($id){
 }
 
 
+dispatch('/config/', 'config');
+function config(){
+    checkIfConnected();
+
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    $configRepository = new ConfigRepository();
+
+    $displayVariationStatus = $configRepository->findConfigById('displayVariationStatus');
+    $cardColor = $configRepository->findConfigById('cardColor');
+    $backgroundType = $configRepository->findConfigById('backgroundType');
+    $backgroundColor = $configRepository->findConfigById('backgroundColor');
+    $displayGraph = $configRepository->findConfigById('displayGraph');
+
+    require 'Views/Partials/head.php';
+    require 'Views/config.php';
+}
+
+dispatch_post('/config/set/', 'setConfig');
+function setConfig(){
+    checkIfConnected();
+
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    $configRepository = new ConfigRepository();
+    $configRepository->setBooleanValueById('displayVariationStatus', $_POST['displayVariationStatus']);
+
+    if(isset($_POST['cardColor'])){
+        $configRepository->setTextValueById('cardColor', $_POST['cardColor']);
+    }
+
+    $configRepository->setBooleanValueById('displayGraph', $_POST['displayGraph']);
+    $configRepository->setTextValueById('backgroundType', $_POST['backgroundType']);
+
+    if(isset($_POST['backgroundColor'])){
+        $configRepository->setTextValueById('backgroundColor', $_POST['backgroundColor']);
+    }
+
+    header('Location: ?/config');
+}
+
+
+
 dispatch('api/getDrinkData/', 'getDrinkData');
 function getDrinkData(){
     require 'Repositories/DrinkRepository.php';
@@ -318,6 +363,31 @@ function getAlertsData(){
     $priceDownConfig  = $configRepository->findConfigById("priceDown");
 
     echo '{"priceUpAlert":'. $priceUpConfig->getBooleanValue().', "priceDownAlert" : '.$priceDownConfig->getBooleanValue().'}';
+}
+
+dispatch('api/getDisplayConfig/', 'getDisplayConfig');
+function getDisplayConfig(){
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    header('Content-Type: text/json');
+
+    $configRepository = new ConfigRepository();
+
+    $displayVariationStatus = $configRepository->findConfigById('displayVariationStatus');
+    $cardColor = $configRepository->findConfigById('cardColor');
+    $backgroundType = $configRepository->findConfigById('backgroundType');
+    $backgroundColor = $configRepository->findConfigById('backgroundColor');
+    $displayGraph = $configRepository->findConfigById('displayGraph');
+
+    $arr = ["displayVariationStatus" => $displayVariationStatus->getBooleanValue(),
+    "cardColor" => $cardColor->getTextValue(),
+    "displayGraph" => $displayGraph->getBooleanValue(),
+    "backgroundType" => $backgroundType->getTextValue(),
+    "backgroundColor" => $backgroundColor->getTextValue()
+    ];
+
+    echo json_encode($arr);
 }
 
 run();
