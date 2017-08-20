@@ -36,6 +36,10 @@ Class DrinkRepository {
         $stmt->execute();
     }
 
+    public function resetAllDrinks(){
+        $stmt = $this->pdo->prepare("UPDATE drinks SET currentPrice = 0, previousPrice = 0, history = '[]', isEnable = false, salesCount = 0, estimatedRevenue = 0");
+        $stmt->execute();
+    }
 
     public function addDrink($drink){
 

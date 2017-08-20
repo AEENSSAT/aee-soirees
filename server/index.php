@@ -6,6 +6,7 @@ require_once 'Libs/limonade/limonade.php';
 function checkIfConnected(){
     if(!isset($_SESSION['isConnected']) || $_SESSION['isConnected'] == false){
         header('Location: ?/login');
+        exit();
     }
 }
 
@@ -141,6 +142,52 @@ function prices(){
     require 'Views/prices.php';
 }
 
+dispatch('tickets', 'tickets');
+function tickets(){
+    checkIfConnected();
+
+    require 'Views/Partials/head.php';
+
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    $configRepository = new ConfigRepository();
+    $ticketPrice = $configRepository->findConfigById('ticketPrice');
+
+    require 'Repositories/TicketSaleRepository.php';
+    require 'Models/TicketSale.php';
+
+    $ticketSaleRepository = new TicketSaleRepository();
+    $ticketCount = $ticketSaleRepository->countTicketsSold();
+    $estimatedRevenue = $ticketSaleRepository->sumEstimatedRevenue();
+
+    var_dump($ticketCount);
+
+    require 'Views/tickets.php';
+}
+
+dispatch('/tickets/sale/:quantity', 'ticketSale');
+function ticketSale($quantity){
+    checkIfConnected();
+
+    require 'Repositories/TicketSaleRepository.php';
+    require 'Models/TicketSale.php';
+
+    require 'Repositories/ConfigRepository.php';
+    require 'Models/Config.php';
+
+    $configRepository = new ConfigRepository();
+    $ticketPrice = floatval($configRepository->findConfigById('ticketPrice')->getTextValue());
+
+    $quantity = intval($quantity);
+    $ticketSale = new TicketSale(time(), $quantity, $ticketPrice, $quantity*$ticketPrice);
+
+    $ticketSaleRepository = new TicketSaleRepository();
+    $ticketSaleRepository->addTicketSale($ticketSale);
+
+    header('location: ?/tickets');
+}
+
 dispatch_post('ticket/price/set', 'setTicketPrice');
 function setTicketPrice(){
     checkIfConnected();
@@ -156,7 +203,7 @@ function setTicketPrice(){
 
     $configRepository->setTextValueById('ticketPrice', $_POST['price']);
 
-    header('location: ?/prices');
+    header('location: ?/tickets');
 }
 
 dispatch_post('/drink/add', 'addDrink');
@@ -330,6 +377,36 @@ function setConfig(){
     header('Location: ?/config');
 }
 
+dispatch('/reset/', 'resetData');
+function resetData(){
+    checkIfConnected();
+
+
+    require 'Views/Partials/head.php';
+    require 'Views/reset.php';
+}
+
+dispatch_post('/reset/confirm', 'resetConfirm');
+function resetConfirm(){
+    checkIfConnected();
+
+    require 'Repositories/DrinkRepository.php';
+    require 'Models/Drink.php';
+
+    require 'Repositories/TicketSaleRepository.php';
+
+    $drinkRepository = new DrinkRepository();
+    $ticketSaleRepository = new TicketSaleRepository();
+
+    if(isset($_POST['pwd']) && !empty($_POST['pwd'])){
+        if($_POST['pwd'] == CONFIG_USER_PASSWORD){
+            $drinkRepository->resetAllDrinks();
+            $ticketSaleRepository->clearSales();
+        }
+    }
+
+    header('Location: ?/reset');
+}
 
 
 dispatch('api/getDrinkData/', 'getDrinkData');
@@ -395,6 +472,7 @@ function getAlertsData(){
 
 dispatch('api/getDisplayConfig/', 'getDisplayConfig');
 function getDisplayConfig(){
+
     require 'Repositories/ConfigRepository.php';
     require 'Models/Config.php';
 

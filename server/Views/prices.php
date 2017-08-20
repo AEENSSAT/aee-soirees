@@ -11,7 +11,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Bourse à la bière</a>
+                <a class="navbar-brand" href="index.html">Soirées AEE</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -100,23 +100,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"><i class="fa fa-glass"></i> Valeur d'un ticket</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <form action="?/ticket/price/set" method="post">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" id="basic-addon2">Prix</span><input class="form-control" type="text" name="price" value="<?php echo $ticketPrice->getTextValue(); ?>">
-                                        </div>
-                                        <br>
-                                        <button class="btn btn-default btn-block" style="width:100%;" type="submit">Go!</button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

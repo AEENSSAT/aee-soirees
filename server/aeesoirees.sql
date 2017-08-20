@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.12deb2+deb8u2
+-- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mar 02 Mai 2017 à 17:24
--- Version du serveur :  5.5.54-0+deb8u1
--- Version de PHP :  5.6.29-0+deb8u1
+-- Généré le :  Dim 20 Août 2017 à 10:57
+-- Version du serveur :  5.7.19-0ubuntu0.16.04.1
+-- Version de PHP :  7.0.22-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,10 +14,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `boursealabiere`
+-- Base de données :  `aeesoirees`
 --
 
 -- --------------------------------------------------------
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `configs`
 --
 
-CREATE TABLE IF NOT EXISTS `configs` (
+CREATE TABLE `configs` (
   `id` varchar(255) NOT NULL,
   `textValue` varchar(255) DEFAULT NULL,
   `booleanValue` tinyint(1) DEFAULT NULL
@@ -37,8 +37,14 @@ CREATE TABLE IF NOT EXISTS `configs` (
 --
 
 INSERT INTO `configs` (`id`, `textValue`, `booleanValue`) VALUES
-('priceDown', NULL, 1),
-('priceUp', NULL, 0);
+('backgroundColor', '#d3f984', NULL),
+('backgroundType', 'color', NULL),
+('cardColor', '#2ba6d7', NULL),
+('displayGraph', NULL, 0),
+('displayVariationStatus', NULL, 0),
+('priceDown', NULL, 0),
+('priceUp', NULL, 0),
+('ticketPrice', '0.5', NULL);
 
 -- --------------------------------------------------------
 
@@ -46,8 +52,8 @@ INSERT INTO `configs` (`id`, `textValue`, `booleanValue`) VALUES
 -- Structure de la table `drinks`
 --
 
-CREATE TABLE IF NOT EXISTS `drinks` (
-`id` int(11) NOT NULL,
+CREATE TABLE `drinks` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `currentPrice` int(11) NOT NULL,
   `previousPrice` int(11) NOT NULL,
@@ -55,25 +61,36 @@ CREATE TABLE IF NOT EXISTS `drinks` (
   `isEnable` tinyint(1) NOT NULL,
   `salesCount` int(11) NOT NULL,
   `estimatedRevenue` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
--- Contenu de la table `drinks`
+-- Structure de la table `ticketsSale`
 --
 
-INSERT INTO `drinks` (`id`, `name`, `currentPrice`, `previousPrice`, `history`, `isEnable`, `salesCount`, `estimatedRevenue`) VALUES
-(1, 'Biere1', 10, 8, '["5","15","20","2","25","20","2","2","2","10","7","2","8"]', 1, 31, 287),
-(2, 'Biere2', 3, 8, '["3","20","30","10","2","100","10","8"]', 1, 20, 164);
+CREATE TABLE `ticketsSale` (
+  `timestamp` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `ticketPrice` float NOT NULL,
+  `price` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Index pour les tables exportées
 --
 
 --
+-- Index pour la table `configs`
+--
+ALTER TABLE `configs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `drinks`
 --
 ALTER TABLE `drinks`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
@@ -83,7 +100,7 @@ ALTER TABLE `drinks`
 -- AUTO_INCREMENT pour la table `drinks`
 --
 ALTER TABLE `drinks`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

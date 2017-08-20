@@ -5,6 +5,6 @@
     define("CONFIG_DATABASE_HOST","localhost");
     define("CONFIG_DATABASE_USER","bourse");
     define("CONFIG_DATABASE_PASSWORD","bourse");
-    define("CONFIG_DATABASE_DBNAME","boursealabiere");
+    define("CONFIG_DATABASE_DBNAME","aeesoirees");
 
  ?>

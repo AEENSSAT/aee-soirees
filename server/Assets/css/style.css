@@ -8,3 +8,17 @@
 .inputRadio label {
     margin: 0;
 }
+
+
+.button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-sales {
+    width: 25%;
+    margin: 5px;
+    padding: 20px 0;
+    font-size: 25px;
+}
