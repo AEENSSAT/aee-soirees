@@ -1,7 +1,53 @@
 <?php
 session_start();
-require_once 'config.php';
+
 require_once 'Libs/limonade/limonade.php';
+
+dispatch('/install', 'install');
+function install(){
+
+    if(file_exists('config.php')){
+        echo 'aee-soirées is already installed !';
+        exit();
+    }
+
+    require 'Views/Partials/head.php';
+    require 'Views/install.php';
+}
+
+dispatch_post('/install', 'performInstall');
+function performInstall(){
+
+    if(file_exists('config.php')){
+        echo 'aee-soirées is already installed !';
+        exit();
+    }
+
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+    $host = $_POST['host'];
+    $user = $_POST['user'];
+    $dbpassword = $_POST['dbpassword'];
+    $name = $_POST['name'];
+
+    $data = "<?php
+        define('CONFIG_USER_LOGIN','$login');
+        define('CONFIG_USER_PASSWORD', '$password'); \r\n
+        define('CONFIG_DATABASE_HOST','$host');
+        define('CONFIG_DATABASE_USER','$user');
+        define('CONFIG_DATABASE_PASSWORD','$dbpassword');
+        define('CONFIG_DATABASE_DBNAME','$name');
+    ?>";
+
+    $status = file_put_contents('config.php', $data);
+    if($status === false){
+        header('Location: ?/install');
+    }else{
+        header('Location: ?/login');
+    }
+}
+
+include_once 'config.php';
 
 function checkIfConnected(){
     if(!isset($_SESSION['isConnected']) || $_SESSION['isConnected'] == false){
@@ -12,6 +58,12 @@ function checkIfConnected(){
 
 dispatch('/', 'admin');
 function admin(){
+
+    if(!file_exists('config.php')){
+        header('Location: ?/install');
+        exit();
+    }
+
     if(isset($_SESSION['isConnected']) && $_SESSION['isConnected'] == true){
         header('Location: ?/dashboard');
     }else{
@@ -21,6 +73,12 @@ function admin(){
 
 dispatch('login', 'login');
 function login(){
+
+    if(!file_exists('config.php')){
+        header('Location: ?/install');
+        exit();
+    }
+
     require 'Views/Partials/head.php';
     require 'Views/login.php';
 }
