@@ -24,12 +24,12 @@
 
                 <div class="input-group">
                     <span class="input-group-addon" id="basic-addon2">Database host</span>
-                    <input class="form-control" type="password" name="host" value="">
+                    <input class="form-control" type="text" name="host" value="">
                 </div>
                 <br>
                 <div class="input-group">
                     <span class="input-group-addon" id="basic-addon2">Database user</span>
-                    <input class="form-control" type="password" name="user" value="">
+                    <input class="form-control" type="text" name="user" value="">
                 </div>
                 <br>
                 <div class="input-group">
@@ -39,7 +39,7 @@
                 <br>
                 <div class="input-group">
                     <span class="input-group-addon" id="basic-addon2">Database name</span>
-                    <input class="form-control" type="password" name="name" value="">
+                    <input class="form-control" type="text" name="name" value="">
                 </div>
                 <br>
                 <div class="input-group">
