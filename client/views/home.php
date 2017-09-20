@@ -7,7 +7,7 @@
 
 <style media="screen" ng-if="displayConfig.backgroundType == 'image'">
     body {
-        background: url('assets/imgs/bckg.jpg');
+        background: url('client/assets/imgs/bckg.jpg');
     }
 </style>
 
